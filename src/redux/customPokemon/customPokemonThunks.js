@@ -8,7 +8,7 @@ import {
 } from "./customPokemonActions";
 import {
   fetchCustomPokemon,
-  createCustomPokemon,
+  createCustomPokemonApi,
   updateCustomPokemonApi,
   deleteCustomPokemonApi,
 } from "../../api/jsonServer";
@@ -27,7 +27,7 @@ export const loadCustomPokemon = () => async (dispatch) => {
 // Add a new custom Pokémon
 export const createCustomPokemonThunk = (customPokemon) => async (dispatch) => {
   try {
-    const newCustomPokemon = await createCustomPokemon(customPokemon);
+    const newCustomPokemon = await createCustomPokemonApi(customPokemon);
     dispatch(addCustomPokemon(newCustomPokemon));
   } catch (error) {
     console.error(`Error: ${error.message}`);

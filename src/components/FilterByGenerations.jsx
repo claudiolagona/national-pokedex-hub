@@ -19,6 +19,7 @@ export const FilterByGenerations = ({
           </option>
         );
       })}
+      <option value="custom">Custom Pokémon</option>
     </select>
   );
 };

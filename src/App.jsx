@@ -12,12 +12,23 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import "./App.css";
 import { Navbar } from "./components/Navbar";
 import { GlobalLoader } from "./components/GlobalLoader";
+import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loadCustomPokemon } from "./redux/customPokemon/customPokemonThunks";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadCustomPokemon());
+  }, [dispatch]);
+
   return (
     <>
       <GlobalLoader />
       <Navbar />
+      <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

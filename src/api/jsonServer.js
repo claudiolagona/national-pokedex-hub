@@ -54,7 +54,7 @@ export const updateCustomPokemonApi = async (customPokemon) => {
 };
 
 // Delete custom Pokémon
-export const deleteCustomPokemon = async (id) => {
+export const deleteCustomPokemonApi = async (id) => {
   const res = await fetch(`${BASE_URL}/custom-pokemon/${id}`, {
     method: "DELETE",
   });

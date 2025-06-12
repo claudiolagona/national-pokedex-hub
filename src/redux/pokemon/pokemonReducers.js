@@ -2,11 +2,6 @@ const initialState = {
   pokemonList: [],
   authStatus: "idle",
   error: null,
-  filters: {
-    name: "",
-    generation: "",
-    type: "",
-  },
 };
 
 export const pokemonReducer = (state = initialState, action) => {

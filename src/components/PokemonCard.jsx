@@ -4,12 +4,17 @@ import { typeColors } from "../utils/typeColors";
 export const PokemonCard = ({ pokemon }) => {
   const isCustom = pokemon.custom;
   const { name, types, image } = pokemon;
+  const sprite = pokemon.sprite || null;
 
   return (
-    <Link to={`/pokemon/${name}`}>
-      <div className="w-95 bg-white px-4 py-15 rounded-xl shadow-lg text-center hover:scale-110 transition cursor-pointer duration-200">
-        {image ? (
-          <img src={image} alt={name} className="w-30 h-30 mx-auto mb-2" />
+    <div className="w-95 bg-white px-4 py-15 rounded-xl shadow-lg text-center hover:scale-110 transition cursor-pointer duration-200">
+      <Link to={`/pokemon/${name}`}>
+        {image || sprite ? (
+          <img
+            src={image || sprite}
+            alt={name}
+            className="w-30 h-30 mx-auto mb-2"
+          />
         ) : (
           <div className="w-30 h-30 mx-auto mb-2 bg-gray-100 rounded animate-pulse"></div>
         )}
@@ -29,13 +34,13 @@ export const PokemonCard = ({ pokemon }) => {
             ))}
           </div>
         )}
+      </Link>
 
-        {isCustom && (
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded mt-2 inline-block">
-            Custom
-          </span>
-        )}
-      </div>
-    </Link>
+      {isCustom && (
+        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded mt-2 inline-block">
+          Custom
+        </span>
+      )}
+    </div>
   );
 };

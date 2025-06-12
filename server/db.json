@@ -1,17 +1,58 @@
 {
-    "users": [
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "ash",
+      "password": "professoroak",
+      "role": "user"
+    }
+  ],
+  "custom-pokemon": [
+    {
+      "id": "9d0e",
+      "name": "Dragomitee",
+      "types": [
+        "flying",
+        "fairy"
+      ],
+      "abilities": [
+        "Overgrow"
+      ],
+      "sprite": "https://static.wikia.nocookie.net/f40d5190-5472-4316-8c81-e16d07f13c96/scale-to-width/755",
+      "description": "",
+      "stats": [
         {
-            "id": 1,
-            "username": "admin",
-            "password": "admin",
-            "role": "admin"
+          "name": "hp",
+          "value": 100
         },
         {
-            "id": 2,
-            "username": "ash",
-            "password": "professoroak",
-            "role": "user"
+          "name": "attack",
+          "value": 100
+        },
+        {
+          "name": "defense",
+          "value": 100
+        },
+        {
+          "name": "specialAttack",
+          "value": 150
+        },
+        {
+          "name": "specialDefense",
+          "value": 100
+        },
+        {
+          "name": "speed",
+          "value": 150
         }
-    ],
-    "custom-pokemon": []
+      ],
+      "generation": "custom"
+    }
+  ]
 }

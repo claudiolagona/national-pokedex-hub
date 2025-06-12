@@ -13,54 +13,89 @@ import { Tab } from "@headlessui/react";
 import { parseEvolutionChain } from "../utils/parseEvolutions";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import {
-  addFavorites,
-  removeFavorites,
-} from "../redux/favorites/favoritesActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { FavoriteButton } from "../components/FavoriteButton";
+import { transformCustomPokemon } from "../utils/transformCustomPokemon";
+import { deleteCustomPokemonThunk } from "../redux/customPokemon/customPokemonThunks";
+import { ConfirmModal } from "../components/ConfirmModal";
+import { Link } from "react-router-dom";
 
 export const PokemonView = () => {
   const { name } = useParams();
   const navigate = useNavigate();
   const [pokemon, setPokemon] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const classNames = (...classes) => classes.filter(Boolean).join(" ");
-  const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.list);
-  const isFavorite = favorites.includes(pokemon);
+  const { list: customPokemonList, authStatus: authCustomStatus } = useSelector(
+    (state) => state.customPokemon
+  );
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const dispatch = useDispatch();
 
-  const toggleFavorite = () => {
-    if (isFavorite) {
-      dispatch(removeFavorites(pokemon));
-    } else {
-      dispatch(addFavorites(pokemon));
+  const handleDeleteCustom = (id) => {
+    setSelectedId(id);
+    setModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedId == null) return;
+    try {
+      await fetch(`http://localhost:3001/pokemon/${selectedId}`, {
+        method: "DELETE",
+      });
+
+      dispatch(deleteCustomPokemonThunk(selectedId));
+      setModalOpen(false);
+      setSelectedId(null);
+      navigate("/pokemon");
+    } catch (error) {
+      console.error(
+        `Error while deleting Custom Pokémon ${selectedId} - ${error.message}`
+      );
     }
   };
 
+  const handleCancelDelete = () => {
+    setModalOpen(false);
+    setSelectedId(null);
+  };
+
   useEffect(() => {
+    if (authCustomStatus !== "succeeded") return;
+
     const fetchDetails = async () => {
       setIsLoading(true);
       try {
-        const pokemonRes = await fetchPokemonDetail(name);
-        const speciesRes = await fetchPokemonSpecies(pokemonRes.species.url);
-        const evolutionChain = await fetchEvolutionChain(
-          speciesRes.evolution_chain.url
+        const customPokemon = customPokemonList.find(
+          (pokemon) =>
+            pokemon.name && pokemon.name.toLowerCase() === name.toLowerCase()
         );
 
-        setPokemon({
-          name: pokemonRes.name,
-          id: pokemonRes.id,
-          sprites: pokemonRes.sprites,
-          types: pokemonRes.types,
-          cries: pokemonRes.cries.latest,
-          moves: pokemonRes.moves.slice(0, 20),
-          stats: pokemonRes.stats,
-          height: pokemonRes.height,
-          weight: pokemonRes.weight,
-          generation: speciesRes.generation.name,
-          evolutions: parseEvolutionChain(evolutionChain),
-        });
+        if (customPokemon) {
+          setPokemon(transformCustomPokemon(customPokemon));
+        } else {
+          const pokemonRes = await fetchPokemonDetail(name);
+          const speciesRes = await fetchPokemonSpecies(pokemonRes.species.url);
+          const evolutionChain = await fetchEvolutionChain(
+            speciesRes.evolution_chain.url
+          );
+
+          setPokemon({
+            name: pokemonRes.name,
+            id: pokemonRes.id,
+            sprites: pokemonRes.sprites,
+            types: pokemonRes.types,
+            cries: pokemonRes.cries.latest,
+            moves: pokemonRes.moves.slice(0, 20),
+            stats: pokemonRes.stats,
+            height: pokemonRes.height,
+            weight: pokemonRes.weight,
+            generation: speciesRes.generation.name,
+            evolutions: parseEvolutionChain(evolutionChain),
+          });
+        }
       } catch (error) {
         console.error(`Error while fetching ${name} - ${error}`);
       } finally {
@@ -69,7 +104,7 @@ export const PokemonView = () => {
     };
 
     fetchDetails();
-  }, [name]);
+  }, [name, customPokemonList, authCustomStatus]);
 
   if (isLoading) return <GlobalLoader />;
 
@@ -124,7 +159,7 @@ export const PokemonView = () => {
           </Swiper>
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <h1 className="text-3xl capitalize font-bold mb-4">
             #{pokemon.id} {pokemon.name}
           </h1>
@@ -140,33 +175,52 @@ export const PokemonView = () => {
               </span>
             ))}
           </div>
-          <audio
-            src={pokemon.cries}
-            type="audio/ogg"
-            className="w-90 h-9"
-            controls
-          />
+          {pokemon.cries && (
+            <audio
+              src={pokemon.cries}
+              type="audio/ogg"
+              className="w-90 h-9"
+              controls
+            />
+          )}
           {isLoggedIn ? (
-            <button
-              onClick={toggleFavorite}
-              className={`px-4 py-2 rounded cursor-pointer mt-4 transition ${
-                isFavorite ? "bg-red-400" : "bg-gray-300"
-              }`}
-            >
-              {isFavorite ? "★ Remove" : "☆ Add"}
-            </button>
+            <FavoriteButton pokemon={pokemon} />
           ) : (
             <p className="mt-4 text-xs text-gray-500 italic">
               Log if you want to save your favorites Pokémon
             </p>
           )}
+          {pokemon.generation === "custom" && (
+            <button
+              className="px-4 py-2 cursor-pointer bg-red-500 hover:bg-red-700 text-white text-center rounded mt-2"
+              onClick={() => handleDeleteCustom(pokemon.id)}
+            >
+              Delete Custom Pokémon
+            </button>
+          )}
+          <ConfirmModal
+            isOpen={modalOpen}
+            message={`Are you sure to delete Custom Pokémon #${pokemon.id}?`}
+            onConfirm={handleConfirmDelete}
+            onCancel={handleCancelDelete}
+          />
+          <Link
+            to={`/update/${pokemon.id}`}
+            className="px-4 py-2 cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white rounded mt-2"
+          >
+            Update Custom Pokémon
+          </Link>
         </div>
       </div>
 
       <div className="mt-10">
         <Tab.Group>
           <Tab.List className="flex space-x-2 border-b mb-4">
-            {["Stats", "Moves", "Evolution Chain"].map((tab) => (
+            {[
+              "Stats",
+              pokemon.moves && "Moves",
+              pokemon.evolution_chain && "Evolution Chain",
+            ].map((tab) => (
               <Tab
                 key={tab}
                 className={({ selected }) =>
@@ -209,43 +263,49 @@ export const PokemonView = () => {
               </div>
             </Tab.Panel>
 
-            <Tab.Panel>
-              <h2 className="text-2xl font-semibold mb-4">Moves</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                {pokemon.moves.map((move) => (
-                  <div
-                    key={move.move.name}
-                    className="capitalize px-4 py-2 bg-gray-100 rounded shadow-sm"
-                  >
-                    {move.move.name.replace("-", " ")}
-                  </div>
-                ))}
-              </div>
-            </Tab.Panel>
+            {pokemon.moves && (
+              <Tab.Panel>
+                <h2 className="text-2xl font-semibold mb-4">Moves</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {pokemon.moves.map((move) => (
+                    <div
+                      key={move.move.name}
+                      className="capitalize px-4 py-2 bg-gray-100 rounded shadow-sm"
+                    >
+                      {move.move.name.replace("-", " ")}
+                    </div>
+                  ))}
+                </div>
+              </Tab.Panel>
+            )}
 
-            <Tab.Panel>
-              <h2 className="text-2xl font-semibold mb-4">Evolution Chain</h2>
-              <div className="flex gap-6 items-center flex-wrap">
-                {pokemon.evolutions.map((evo) => (
-                  <div
-                    key={evo.id}
-                    className="flex flex-col items-center cursor-pointer hover:scale-115 transition"
-                    onClick={() => navigate(`/pokemon/${evo.name}`)}
-                  >
-                    <img
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
-                      alt={evo.name}
-                      className="w-20"
-                      onError={(e) => {
-                        e.target.src =
-                          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png";
-                      }}
-                    />
-                    <span className="capitalize text-sm mt-2">{evo.name}</span>
-                  </div>
-                ))}
-              </div>
-            </Tab.Panel>
+            {pokemon.evolution_chain && (
+              <Tab.Panel>
+                <h2 className="text-2xl font-semibold mb-4">Evolution Chain</h2>
+                <div className="flex gap-6 items-center flex-wrap">
+                  {pokemon.evolutions.map((evo) => (
+                    <div
+                      key={evo.id}
+                      className="flex flex-col items-center cursor-pointer hover:scale-115 transition"
+                      onClick={() => navigate(`/pokemon/${evo.name}`)}
+                    >
+                      <img
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${evo.id}.png`}
+                        alt={evo.name}
+                        className="w-20"
+                        onError={(e) => {
+                          e.target.src =
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png";
+                        }}
+                      />
+                      <span className="capitalize text-sm mt-2">
+                        {evo.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Tab.Panel>
+            )}
           </Tab.Panels>
         </Tab.Group>
       </div>

@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "../components/Search";
 import { FilterByType } from "../components/FilterByType";
 import { FilterByGenerations } from "../components/FilterByGenerations";
+import { loadCustomPokemon } from "../redux/customPokemon/customPokemonThunks";
 
 export const PokemonsList = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,13 @@ export const PokemonsList = () => {
   const { pokemonList, authStatus, error } = useSelector(
     (state) => state.pokemon
   );
+  const customPokemonList =
+    useSelector((state) => state.customPokemon.list) || [];
+  const customAuthStatus = useSelector(
+    (state) => state.customPokemon.authStatus
+  );
+  const customError = useSelector((state) => state.customPokemon.error);
+  const allPokemons = [...pokemonList, ...customPokemonList];
   const [types, setTypes] = useState([]);
   const [generations, setGenerations] = useState([]);
 
@@ -57,10 +65,13 @@ export const PokemonsList = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchPokemonThunk());
-  }, [dispatch]);
+    if (!pokemonList.length > 0) {
+      dispatch(fetchPokemonThunk());
+      dispatch(loadCustomPokemon());
+    }
+  }, [dispatch, pokemonList]);
 
-  const filteredPokemons = pokemonList.filter((pokemon) => {
+  const filteredPokemons = allPokemons.filter((pokemon) => {
     const matchesSearch = pokemon.name
       .toLowerCase()
       .includes(searchPokemon.toLowerCase());
@@ -79,14 +90,14 @@ export const PokemonsList = () => {
     indexOfLastPokemon
   );
 
-  if (authStatus === "loading") {
+  if (authStatus === "loading" || customAuthStatus === "loading") {
     return <GlobalLoader />;
   }
 
-  if (authStatus === "failed") {
+  if (authStatus === "failed" || customAuthStatus === "failed") {
     return (
       <p className="text-red-500 text-center">
-        {error || "Errore nel caricamento dei Pokemon."}
+        {error || customError || "Errore nel caricamento dei Pokemon."}
       </p>
     );
   }
