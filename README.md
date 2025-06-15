@@ -83,7 +83,7 @@ This project uses mocked authentication for demo purposes.
 | Username | Password     | Role  |
 | -------- | ------------ | ----- |
 | ash      | professoroak | user  |
-| oak      | admin        | admin |
+| admin    | admin        | admin |
 
 # Author
 
