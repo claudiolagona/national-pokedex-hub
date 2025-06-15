@@ -63,13 +63,9 @@ npm run dev
 npm run dev
 ```
 
----
-
-### ✅ **2. Folder Structure Overview**
+# Folder Structure Overview
 
 ```markdown
-# Folder Structure
-
 - /src
   ├── /assets # Images and icons
   ├── /components # Reusable components
@@ -79,3 +75,17 @@ npm run dev
   ├── App.jsx
   └── index.js
 ```
+
+# Authentication Info
+
+This project uses mocked authentication for demo purposes.
+
+| Username | Password     | Role  |
+| -------- | ------------ | ----- |
+| ash      | professoroak | user  |
+| oak      | admin        | admin |
+
+# Author
+
+Created with ❤️ by Claudio La Gona
+[LinkedIn](https://linkedin.com/in/claudio-lagona) | [Portfolio](https://www.claudiolagona.com)
