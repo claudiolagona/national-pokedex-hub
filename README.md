@@ -28,6 +28,7 @@ custom Pokémon.
 - JSON Server
 - PokeAPI (<a href="https://pokeapi.co/" target="_blank">https://pokeapi.co/</a>)
 - Framer Motion
+- Swiper
 
 # Goal:
 
