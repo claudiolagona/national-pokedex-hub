@@ -73,8 +73,10 @@ npm run dev
   ├── /pages # Route-level pages
   ├── /redux # Redux store, actions and reducers
   ├── /api # API utilities (PokeAPI and JSON Server)
-  ├── App.jsx
-  └── index.js
+  ├── App.css
+  └── App.jsx
+  ├── index.css
+  └── main.jsx
 ```
 
 # Authentication Info
