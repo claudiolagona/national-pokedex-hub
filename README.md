@@ -68,13 +68,14 @@ npm run dev
 
 ```markdown
 - /src
+  ├── /api # API utilities (PokeAPI and JSON Server)
   ├── /assets # Images and icons
   ├── /components # Reusable components
   ├── /pages # Route-level pages
   ├── /redux # Redux store, actions and reducers
-  ├── /api # API utilities (PokeAPI and JSON Server)
+  ├── /utils # utilities (colors, transform Custom Pokémon, promises, parsing Evolutions)
   ├── App.css
-  └── App.jsx
+  ├── App.jsx
   ├── index.css
   └── main.jsx
 ```
