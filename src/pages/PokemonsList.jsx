@@ -14,7 +14,7 @@ import { loadCustomPokemon } from "../redux/customPokemon/customPokemonThunks";
 
 export const PokemonsList = () => {
   const dispatch = useDispatch();
-  const pokemonsPerPage = 21;
+  const pokemonsPerPage = 20;
 
   const userFromState = useSelector((state) => state.user.currentUser);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,7 +109,7 @@ export const PokemonsList = () => {
   if (authStatus === "failed" || customAuthStatus === "failed") {
     return (
       <p className="text-red-500 text-center">
-        {error || customError || "Errore nel caricamento dei Pokemon."}
+        {error || customError || "Error while charging Pokémon."}
       </p>
     );
   }
@@ -151,8 +151,8 @@ export const PokemonsList = () => {
   };
 
   return (
-    <div className="px-4 py-6 mb-10">
-      <div className="flex flex-col md:flex-row justify-center items-baseline gap-4 mb-6 px-35">
+    <div className="px-4 sm:px-6 lg:px-20 py-6 mb-10">
+      <div className="flex flex-col lg:flex-row justify-center items-baseline gap-4 flex-wrap mb-6">
         <Search
           searchPokemon={searchPokemon}
           handleChange={handleSearchChange}
@@ -170,7 +170,7 @@ export const PokemonsList = () => {
         />
       </div>
 
-      <p className="text-left text-sm text-gray-700 px-90">
+      <p className="px-4 sm:px-6 lg:px-20 text-left text-sm text-gray-700 mb-4">
         {filteredPokemons.length} Pokémons found
       </p>
 
@@ -181,10 +181,10 @@ export const PokemonsList = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="w-full flex flex-row flex-wrap justify-center gap-8 py-10 px-40"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center"
         >
           {currentPokemons.length === 0 && (
-            <p className="text-center text-gray-500 text-lg font-semibold">
+            <p className="col-span-full text-center text-gray-500 text-lg font-semibold">
               No Pokémons found
             </p>
           )}

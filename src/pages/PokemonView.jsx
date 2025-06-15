@@ -119,7 +119,7 @@ export const PokemonView = () => {
 
   return (
     <motion.div
-      className="max-w-4xl mx-auto p-6"
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -131,8 +131,8 @@ export const PokemonView = () => {
         ← Back
       </button>
 
-      <div className="flex flex-col md:flex-row items-center gap-10">
-        <div className="w-full max-w-md mx-auto">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
+        <div className="w-full sm:max-w-sm md:max-w-md">
           <Swiper
             modules={[Navigation, Pagination]}
             spaceBetween={20}
@@ -153,7 +153,7 @@ export const PokemonView = () => {
                     <img
                       src={sprite.src}
                       alt={sprite.label}
-                      className="w-24 mx-auto"
+                      className="w-24 sm:w-32 md:w-40 mx-auto object-contain"
                     />
                     <p className="mt-2 text-sm">{sprite.label}</p>
                   </div>
@@ -162,15 +162,15 @@ export const PokemonView = () => {
           </Swiper>
         </div>
 
-        <div className="flex flex-col">
-          <h1 className="text-3xl capitalize font-bold mb-4">
+        <div className="w-full flex flex-col items-center lg:items-start text-center lg:text-left">
+          <h1 className="text-2xl md:text-3xl capitalize font-bold mb-4">
             #{pokemon.id} {pokemon.name}
           </h1>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap justify-center lg:justify-start gap-2">
             {pokemon.types.map((type) => (
               <span
                 key={type.type.name}
-                className={`text-md px-4 py-2 mb-4 rounded capitalize font-bold ${
+                className={`text-sm md:text-md px-4 py-2 rounded capitalize font-bold ${
                   typeColors[type.type.name] || "bg-gray-200"
                 }`}
               >
@@ -182,20 +182,20 @@ export const PokemonView = () => {
             <audio
               src={pokemon.cries}
               type="audio/ogg"
-              className="w-90 h-9"
+              className="mt-4 w-full max-w-xs h-9"
               controls
             />
           )}
           {isLoggedIn ? (
             <FavoriteButton key={pokemon.name} pokemon={pokemon} />
           ) : (
-            <p className="mt-4 text-xs text-gray-500 italic">
+            <p className="mt-4 text-sm text-gray-500 italic">
               Log if you want to save your favorites Pokémon
             </p>
           )}
           {pokemon.generation === "custom" && (
             <button
-              className="px-4 py-2 cursor-pointer bg-red-500 hover:bg-red-700 text-white text-center rounded mt-2"
+              className="px-4 py-2 w-full sm:w-auto cursor-pointer bg-red-500 hover:bg-red-600 text-white text-center rounded mt-4"
               onClick={() => handleDeleteCustom(pokemon.id)}
             >
               Delete Custom Pokémon
@@ -210,7 +210,7 @@ export const PokemonView = () => {
           {pokemon.generation === "custom" && (
             <Link
               to={`/update/${pokemon.id}`}
-              className="px-4 py-2 cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white rounded mt-2"
+              className="px-4 py-2 w-full sm:w-auto cursor-pointer text-center bg-blue-500 hover:bg-blue-600 text-white rounded mt-4"
             >
               Update Custom Pokémon
             </Link>
@@ -220,7 +220,7 @@ export const PokemonView = () => {
 
       <div className="mt-10">
         <Tab.Group>
-          <Tab.List className="flex space-x-2 border-b mb-4">
+          <Tab.List className="flex flex-wrap gap-2 pb-2 justify-center sm:justify-start border-b mb-4">
             {[
               "Stats",
               pokemon.generation !== "custom" && "Moves",
@@ -245,7 +245,7 @@ export const PokemonView = () => {
           <Tab.Panels>
             <Tab.Panel>
               <h2 className="text-2xl font-semibold mb-4">Stats</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {pokemon.stats.map((stat) => (
                   <div
                     key={stat.stat.name}
@@ -271,7 +271,7 @@ export const PokemonView = () => {
             {pokemon.moves && (
               <Tab.Panel>
                 <h2 className="text-2xl font-semibold mb-4">Moves</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {pokemon.moves.map((move) => (
                     <div
                       key={move.move.name}

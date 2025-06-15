@@ -35,7 +35,7 @@ export const Home = () => {
         >
           Go to Pokédex
         </Link>
-        {user.currentUser.role === "admin" && (
+        {user.currentUser?.role === "admin" && (
           <Link
             to={"/create"}
             className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded shadow"
