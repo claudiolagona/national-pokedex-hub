@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import welcomingPikachu from "../assets/pika-404.png";
+import welcomingPikachu from "../assets/pika-welcome.png";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
@@ -8,7 +8,7 @@ export const Home = () => {
   const user = useSelector((state) => state.user);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white text-gray-800 px-4 text-center">
+    <div className="h-200 flex flex-col items-center justify-center bg-white text-gray-800 px-4 text-center">
       <h1 className="text-4xl md:text-5xl font-bold mb-4">National Pokédex</h1>
       <p className="text-lg md:text-xl mb-8">
         Your personal Pokémon Center Hub

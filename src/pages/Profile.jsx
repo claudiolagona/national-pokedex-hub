@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import profileAvatar from "../assets/pika-404.png";
+import profileAdmin from "../assets/pika-admin.png";
+import profileUser from "../assets/pika-user.png";
 
 export const Profile = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -11,7 +12,7 @@ export const Profile = () => {
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
       <div className="flex flex-col sm:flex-row items-center gap-6">
         <img
-          src={profileAvatar}
+          src={currentUser.role === "admin" ? profileAdmin : profileUser}
           alt="Avatar"
           className="w-32 h-32 rounded-full border-4 border-yellow-400"
         />
@@ -39,7 +40,7 @@ export const Profile = () => {
 
       <div className="mt-10">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-          Some of Your Favorite Pokémons
+          Some of your Favorite Pokémons
         </h2>
         {favorites.length === 0 ? (
           <p className="text-gray-500">

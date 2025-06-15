@@ -22,6 +22,17 @@ export const Navbar = () => {
           <Link to="/pokemon">Pokémons</Link>
         </li>
 
+        {isLoggedIn && currentUser?.role === "admin" && (
+          <>
+            <li>
+              <Link to="/create">Create a Pokémon</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+          </>
+        )}
+
         {isLoggedIn && (
           <>
             <li>
@@ -29,17 +40,6 @@ export const Navbar = () => {
             </li>
             <li>
               <Link to="profile">Profile</Link>
-            </li>
-          </>
-        )}
-
-        {isLoggedIn && currentUser?.role === "admin" && (
-          <>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/create">Create a Pokémon</Link>
             </li>
           </>
         )}

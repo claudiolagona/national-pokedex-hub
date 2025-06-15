@@ -1,12 +1,81 @@
-# React + Vite
+# Project Title: National Pokédex Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Description:
 
-Currently, two official plugins are available:
+The National Pokédex Hub is a web application built with React that allows users to explore, manage and customize their favorite Pokémon.
+It provides both regular users and admin users with tailored experiences, including browsing Pokémon data, managing favorites and creating
+custom Pokémon.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Key Features:
 
-## Expanding the ESLint configuration
+- 🔍 Search and Filter: users can search for Pokémon by name, type and generation.
+- ⭐ Favorites: logged-in users can save and view their favorite Pokémon.
+- 👤 User Profile: each user has a dedicated profile page displaying their informations and favorite Pokémon.
+- 🧑‍💻 Admin Dashboard: admins have access to a private dashboard that displays the most recent custom Pokémon created.
+- ✍️ Custom Pokémon Creation: admins can create, edit and delete custom Pokémon using a local JSON server.
+- 🧭 Routing: React Router is used to manage navigation between pages like Home, Profile, Favorites, etc.
+- 🧠 State Management: Redux is used to manage global application state (user, favorites, Custom Pokémon, Pokémon list).
+- 💅 Tailwind CSS: styling is handled with Tailwind CSS for a responsive and clean UI.
+- 🎮 Gamified UX: friendly illustrations and small animations create a fun and engaging user experience.
+- ❌ Custom 404 Page: users are greeted with a personalized 404 page when they navigate to an unknown route.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Technology Used:
+
+- React
+- Redux Toolkit
+- React Router
+- Tailwind CSS
+- JSON Server
+- PokeAPI (<a href="https://pokeapi.co/" target="_blank">https://pokeapi.co/</a>)
+- Framer Motion
+
+# Goal:
+
+To provide a fun, educational and interactive platform where Pokémon fans can discover, favorite and even design their own Custom Pokémon — all
+while distinguishing between user roles in a clean, gamified interface.
+
+# Installation:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/claudiolagona/national-pokedex-hub
+cd national-pokedex-hub
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the JSON Server:
+
+```bash
+cd server
+npm install
+npm run dev
+```
+
+4. Run the React application:
+
+```bash
+npm run dev
+```
+
+---
+
+### ✅ **2. Folder Structure Overview**
+
+```markdown
+# Folder Structure
+
+- /src
+  ├── /assets # Images and icons
+  ├── /components # Reusable components
+  ├── /pages # Route-level pages
+  ├── /redux # Redux store, actions and reducers
+  ├── /api # API utilities (PokeAPI and JSON Server)
+  ├── App.jsx
+  └── index.js
+```
