@@ -9,7 +9,7 @@ export const favoritesReducer = (state = initialState, action) => {
     case "favorites/remove":
       return {
         ...state,
-        list: state.list.filter((id) => id !== action.payload),
+        list: state.list.filter((pokemon) => pokemon.name !== action.payload.name),
       };
     default:
       return state;

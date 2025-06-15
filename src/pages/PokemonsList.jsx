@@ -16,6 +16,14 @@ export const PokemonsList = () => {
   const dispatch = useDispatch();
   const pokemonsPerPage = 21;
 
+  const userFromState = useSelector((state) => state.user.currentUser);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const currentUser =
+    userFromState && userFromState.role
+      ? userFromState
+      : {
+          role: "guest",
+        };
   const { pokemonList, authStatus, error } = useSelector(
     (state) => state.pokemon
   );
@@ -67,9 +75,11 @@ export const PokemonsList = () => {
   useEffect(() => {
     if (!pokemonList.length > 0) {
       dispatch(fetchPokemonThunk());
-      dispatch(loadCustomPokemon());
+      if (currentUser.role === "admin") {
+        dispatch(loadCustomPokemon());
+      }
     }
-  }, [dispatch, pokemonList]);
+  }, [dispatch, pokemonList, currentUser]);
 
   const filteredPokemons = allPokemons.filter((pokemon) => {
     const matchesSearch = pokemon.name
@@ -77,8 +87,10 @@ export const PokemonsList = () => {
       .includes(searchPokemon.toLowerCase());
     const matchesType = !selectedType || pokemon.types?.includes(selectedType);
     const matchesGen = !selectedGen || pokemon.generation === selectedGen;
+    const customVisibility =
+      currentUser?.role === "admin" || pokemon.generation !== "custom";
 
-    return matchesSearch && matchesType && matchesGen;
+    return matchesSearch && matchesType && matchesGen && customVisibility;
   });
 
   const totalPages = Math.ceil(filteredPokemons.length / pokemonsPerPage);
@@ -154,6 +166,7 @@ export const PokemonsList = () => {
           selectedGen={selectedGen}
           changeGen={handleChangeGen}
           allGenerations={generations}
+          currentUser={currentUser}
         />
       </div>
 

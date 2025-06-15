@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export const FavoriteButton = ({ pokemon }) => {
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.favorites.list);
-  const isFavorite = favorites.some((fav) => fav === pokemon);
+  const isFavorite = favorites.some((fav) => fav.name === pokemon.name);
 
   const handleFavoriteToggle = () => {
     if (isFavorite) {
@@ -19,6 +19,8 @@ export const FavoriteButton = ({ pokemon }) => {
       toast.success(`${pokemon.name} added to favorites.`);
     }
   };
+
+  console.log(isFavorite);
 
   return (
     <button

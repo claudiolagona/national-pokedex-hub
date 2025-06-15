@@ -1,0 +1,17 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "dev": "json-server --watch db.json --port 3001"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Claudio"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "json-server": "1.0.0-beta.3"
+    }
+}

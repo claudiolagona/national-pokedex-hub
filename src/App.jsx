@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
+import { NotFound } from "./pages/NotFound";
 import { Login } from "./pages/Login";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { CreateCustomPokemon } from "./pages/CreateCustomPokemon";
@@ -47,6 +48,9 @@ function App() {
           <Route path="/create" element={<CreateCustomPokemon />} />
           <Route path="/update/:id" element={<UpdateCustomPokemon />} />
         </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

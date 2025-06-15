@@ -5,6 +5,12 @@
     font-family: 'Space Mono';
 }
 
-h1, h2, h3, h4, h5, h6, .logo {
-    font-family: 'Exo';
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo {
+    font-family: 'Exo 2';
 }

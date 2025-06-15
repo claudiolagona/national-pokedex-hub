@@ -2,6 +2,7 @@ export const FilterByGenerations = ({
   selectedGen,
   changeGen,
   allGenerations,
+  currentUser,
 }) => {
   return (
     <select
@@ -19,7 +20,9 @@ export const FilterByGenerations = ({
           </option>
         );
       })}
-      <option value="custom">Custom Pokémon</option>
+      {currentUser?.role === "admin" && (
+        <option value="custom">Custom Pokémon</option>
+      )}
     </select>
   );
 };

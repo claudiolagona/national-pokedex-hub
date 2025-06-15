@@ -31,6 +31,7 @@ export const PokemonView = () => {
   const { list: customPokemonList, authStatus: authCustomStatus } = useSelector(
     (state) => state.customPokemon
   );
+  const currentUser = useSelector((state) => state.user.currentUser);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
 
@@ -93,7 +94,7 @@ export const PokemonView = () => {
             height: pokemonRes.height,
             weight: pokemonRes.weight,
             generation: speciesRes.generation.name,
-            evolutions: parseEvolutionChain(evolutionChain),
+            evolution_chain: parseEvolutionChain(evolutionChain),
           });
         }
       } catch (error) {
@@ -114,6 +115,8 @@ export const PokemonView = () => {
     );
   }
 
+  if (currentUser.role !== "admin" && pokemon.generation === "custom") return;
+
   return (
     <motion.div
       className="max-w-4xl mx-auto p-6"
@@ -123,7 +126,7 @@ export const PokemonView = () => {
     >
       <button
         className="mb-6 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/pokemon")}
       >
         ← Back
       </button>
@@ -184,7 +187,7 @@ export const PokemonView = () => {
             />
           )}
           {isLoggedIn ? (
-            <FavoriteButton pokemon={pokemon} />
+            <FavoriteButton key={pokemon.name} pokemon={pokemon} />
           ) : (
             <p className="mt-4 text-xs text-gray-500 italic">
               Log if you want to save your favorites Pokémon
@@ -204,12 +207,14 @@ export const PokemonView = () => {
             onConfirm={handleConfirmDelete}
             onCancel={handleCancelDelete}
           />
-          <Link
-            to={`/update/${pokemon.id}`}
-            className="px-4 py-2 cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white rounded mt-2"
-          >
-            Update Custom Pokémon
-          </Link>
+          {pokemon.generation === "custom" && (
+            <Link
+              to={`/update/${pokemon.id}`}
+              className="px-4 py-2 cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white rounded mt-2"
+            >
+              Update Custom Pokémon
+            </Link>
+          )}
         </div>
       </div>
 
@@ -218,8 +223,8 @@ export const PokemonView = () => {
           <Tab.List className="flex space-x-2 border-b mb-4">
             {[
               "Stats",
-              pokemon.moves && "Moves",
-              pokemon.evolution_chain && "Evolution Chain",
+              pokemon.generation !== "custom" && "Moves",
+              pokemon.generation !== "custom" && "Evolution Chain",
             ].map((tab) => (
               <Tab
                 key={tab}
@@ -283,7 +288,7 @@ export const PokemonView = () => {
               <Tab.Panel>
                 <h2 className="text-2xl font-semibold mb-4">Evolution Chain</h2>
                 <div className="flex gap-6 items-center flex-wrap">
-                  {pokemon.evolutions.map((evo) => (
+                  {pokemon.evolution_chain.map((evo) => (
                     <div
                       key={evo.id}
                       className="flex flex-col items-center cursor-pointer hover:scale-115 transition"
