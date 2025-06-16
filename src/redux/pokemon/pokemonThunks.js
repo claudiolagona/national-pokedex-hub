@@ -36,7 +36,7 @@ export const fetchPokemonThunk =
         }
       });
 
-      const detailedPokemons = (await throttlePromise(tasks, 100)).filter(
+      const detailedPokemons = (await throttlePromise(tasks, 50)).filter(
         Boolean
       );
 
