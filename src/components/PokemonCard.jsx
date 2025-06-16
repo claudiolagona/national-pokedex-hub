@@ -21,16 +21,22 @@ export const PokemonCard = ({ pokemon }) => {
 
         {types && (
           <div className="flex justify-center gap-2 mt-2 flex-wrap">
-            {types.map((type) => (
-              <span
-                className={`text-md px-4 py-2 rounded capitalize font-bold ${
-                  typeColors[type] || "bg-gray-200"
-                }`}
-                key={type}
-              >
-                {type}
-              </span>
-            ))}
+            {types.map((type, index) => {
+              if (!type || !type.type || !type.type.name) return null;
+
+              const typeName = type.type.name;
+
+              return (
+                <span
+                  className={`text-md px-4 py-2 rounded capitalize font-bold ${
+                    typeColors[typeName] || "bg-gray-200"
+                  }`}
+                  key={index}
+                >
+                  {typeName}
+                </span>
+              );
+            })}
           </div>
         )}
       </Link>
