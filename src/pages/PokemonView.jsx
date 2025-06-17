@@ -27,7 +27,7 @@ export const PokemonView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const classNames = (...classes) => classes.filter(Boolean).join(" ");
+
   const { list: customPokemonList, authStatus: authCustomStatus } = useSelector(
     (state) => state.customPokemon
   );
@@ -119,19 +119,19 @@ export const PokemonView = () => {
 
   return (
     <motion.div
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+      className="max-w-7xl mx-auto px-4 py-25"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
       <button
-        className="mb-6 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
+        className="mb-6 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition cursor-pointer"
         onClick={() => navigate("/pokemon")}
       >
         ← Back
       </button>
 
-      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
+      <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full sm:max-w-sm md:max-w-md">
           <Swiper
             modules={[Navigation, Pagination]}
@@ -153,7 +153,7 @@ export const PokemonView = () => {
                     <img
                       src={sprite.src}
                       alt={sprite.label}
-                      className="w-24 sm:w-32 md:w-40 mx-auto object-contain"
+                      className="w-24 sm:w-32 md:w-40 object-contain"
                     />
                     <p className="mt-2 text-sm">{sprite.label}</p>
                   </div>
@@ -162,15 +162,15 @@ export const PokemonView = () => {
           </Swiper>
         </div>
 
-        <div className="w-full flex flex-col items-center lg:items-start text-center lg:text-left">
-          <h1 className="text-2xl md:text-3xl capitalize font-bold mb-4">
+        <div className="flex-1 text-center lg:text-left">
+          <h1 className="text-3xl font-bold capitalize mb-4">
             #{pokemon.id} {pokemon.name}
           </h1>
-          <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+          <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-4">
             {pokemon.types.map((type) => (
               <span
                 key={type.type.name}
-                className={`text-sm md:text-md px-4 py-2 rounded capitalize font-bold ${
+                className={`px-4 py-1 rounded-lg text-sm font-semibold capitalize ${
                   typeColors[type.type.name] || "bg-gray-200"
                 }`}
               >
@@ -182,20 +182,20 @@ export const PokemonView = () => {
             <audio
               src={pokemon.cries}
               type="audio/ogg"
-              className="mt-4 w-full max-w-xs h-9"
+              className="mt-2 w-full max-w-xs h-9"
               controls
             />
           )}
           {isLoggedIn ? (
             <FavoriteButton key={pokemon.name} pokemon={pokemon} />
           ) : (
-            <p className="mt-4 text-sm text-gray-500 italic">
+            <p className="text-sm text-gray-500 italic mt-4">
               Log if you want to save your favorites Pokémon
             </p>
           )}
           {pokemon.generation === "custom" && (
             <button
-              className="px-4 py-2 w-full sm:w-auto cursor-pointer bg-red-500 hover:bg-red-600 text-white text-center rounded mt-4"
+              className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg mt-2 block w-full sm:w-auto cursor-pointer"
               onClick={() => handleDeleteCustom(pokemon.id)}
             >
               Delete Custom Pokémon
@@ -210,7 +210,7 @@ export const PokemonView = () => {
           {pokemon.generation === "custom" && (
             <Link
               to={`/update/${pokemon.id}`}
-              className="px-4 py-2 w-full sm:w-auto cursor-pointer text-center bg-blue-500 hover:bg-blue-600 text-white rounded mt-4"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg mt-2 inline-block w-full text-center sm:w-auto"
             >
               Update Custom Pokémon
             </Link>
@@ -220,22 +220,25 @@ export const PokemonView = () => {
 
       <div className="mt-10">
         <Tab.Group>
-          <Tab.List className="flex flex-wrap gap-2 pb-2 justify-center sm:justify-start border-b mb-4">
+          <Tab.List className="flex flex-wrap gap-2 border-b pb-2 mb-4 justify-center sm:justify-start">
             {[
               "Stats",
               pokemon.generation !== "custom" && "Moves",
               pokemon.generation !== "custom" && "Evolution Chain",
-            ].map((tab) => (
+            ].map((tab, index) => (
               <Tab
-                key={tab}
-                className={({ selected }) =>
-                  classNames(
-                    "px-4 py-2 text-sm font-medium cursor-pointer outline-none",
-                    selected
-                      ? "underline font-semibold text-grey-800"
-                      : "text-gray-500"
-                  )
-                }
+                key={index}
+                className={({ selected }) => {
+                  const notCustom =
+                    selected && pokemon.generation !== "custom"
+                      ? "px-4 py-2 text-sm font-semibold underline cursor-pointer"
+                      : "px-4 py-2 text-sm text-gray-500 hover:text-black cursor-pointer";
+                  const custom =
+                    selected && pokemon.generation === "custom"
+                      ? "px-4 py-2 text-sm font-semibold underline cursor-pointer"
+                      : "px-4 py-2 text-sm text-gray-500 hover:text-black";
+                  return pokemon.generation === "custom" ? custom : notCustom;
+                }}
               >
                 {tab}
               </Tab>
@@ -257,10 +260,10 @@ export const PokemonView = () => {
                       </span>
                       <span className="capitalize">{stat.base_stat}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded h-4 relative">
+                    <div className="w-full bg-gray-200 rounded-lg h-3 relative">
                       <div
-                        className="absolute h-4 rounded bg-green-500"
-                        style={{ width: `${stat.base_stat / 1.5}%` }}
+                        className="absolute h-3 rounded-lg bg-green-500"
+                        style={{ width: `${stat.base_stat / 2.55}%` }}
                       ></div>
                     </div>
                   </div>
@@ -271,11 +274,11 @@ export const PokemonView = () => {
             {pokemon.moves && (
               <Tab.Panel>
                 <h2 className="text-2xl font-semibold mb-4">Moves</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {pokemon.moves.map((move) => (
                     <div
                       key={move.move.name}
-                      className="capitalize px-4 py-2 bg-gray-100 rounded shadow-sm"
+                      className="bg-gray-100 rounded-lg px-4 py-2 text-sm capitalize"
                     >
                       {move.move.name.replace("-", " ")}
                     </div>
@@ -287,11 +290,11 @@ export const PokemonView = () => {
             {pokemon.evolution_chain && (
               <Tab.Panel>
                 <h2 className="text-2xl font-semibold mb-4">Evolution Chain</h2>
-                <div className="flex gap-6 items-center flex-wrap">
+                <div className="flex gap-6 flex-wrap justify-center sm:justify-start">
                   {pokemon.evolution_chain.map((evo) => (
                     <div
                       key={evo.id}
-                      className="flex flex-col items-center cursor-pointer hover:scale-115 transition"
+                      className="flex flex-col items-center cursor-pointer hover:scale-105 transition"
                       onClick={() => navigate(`/pokemon/${evo.name}`)}
                     >
                       <img

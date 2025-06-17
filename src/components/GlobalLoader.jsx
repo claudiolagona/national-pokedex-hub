@@ -16,8 +16,16 @@ export const GlobalLoader = () => {
 
   return (
     isLoading && (
-      <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-        <PacmanLoader size={50} color="#ffcb05" />
+      <div
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+        aria-label="Loading"
+      >
+        <div className="text-center">
+          <PacmanLoader size={40} color="#ffcb05" />
+          <p className="mt-4 text-white font-semibold tracking-wide animate-pulse">
+            Loading your Pokédex...
+          </p>
+        </div>
       </div>
     )
   );

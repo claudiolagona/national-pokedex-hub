@@ -1,26 +1,35 @@
 import { Link } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import pika404 from "../assets/pika-404.png";
 
 export const NotFound = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center px-4 bg-gray-100 dark:bg-gray-900">
-      <h1 className="text-6xl font-bold text-red-600">Not Found</h1>
-      <p className="text-2xl mt-4 text-gray-700 dark:text-gray-200">
-        Page not found
-      </p>
-      <p className="mt-2 text-gray-500 dark:text-gray-400">
-        The page you're looking for doesn't exist or has been removed.
-      </p>
-      <Link
-        to={"/"}
-        className="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-      >
-        Go back Home
-      </Link>
-      <img
-        src="../src/assets/pika-404.png"
-        alt="Pikachu 404 Page"
-        className="w-40"
-      />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-100 via-white to-blue-100 px-4 py-10">
+      <div className="backdrop-blur-lg bg-white/60 dark:bg-white/10 shadow-xl rounded-xl p-8 md:p-12 text-center max-w-xl w-full border border-white/30">
+        <h1 className="text-6xl font-extrabold text-red-600 dark:text-red-500 mb-4 drop-shadow">
+          404
+        </h1>
+        <p className="text-2xl font-semibold text-gray-800 mb-2">
+          Uh-oh! Pikachu zapped this page away.
+        </p>
+        <p className="text-gray-600 mb-6">
+          The page you're looking for doesn't exist or has been removed.
+        </p>
+        <Link
+          to={"/"}
+          className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded-lg shadow transition-transform transform hover:scale-105"
+        >
+          Back to Home
+        </Link>
+        <motion.img
+          src={pika404}
+          alt="Pikachu 404 Page"
+          className="w-48 h-auto mx-auto mt-8 drop-shadow-lg"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
     </div>
   );
 };

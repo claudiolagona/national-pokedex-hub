@@ -23,24 +23,31 @@ export const Pagination = ({
   }
 
   return (
-    <div className="flex justify-center gap-2 mt-4">
+    <div className="flex justify-center items-center flex-wrap gap-2 mt-10">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
+        className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-gray-100 hover:bg-gray-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Prev
       </button>
 
-      {start > 1 && <span className="px-2">...</span>}
+      {start > 1 && (
+        <span className="px-2 text-gray-500 font-semibold select-none">
+          ...
+        </span>
+      )}
 
       {pageNumbers.map((number) => {
         return (
           <button
             key={number}
             onClick={() => onPageChange(number)}
-            className={`px-3 py-2 rounded cursor-pointer ${
-              currentPage === number ? "bg-blue-500 text-white" : "bg-gray-100"
+            className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer
+            ${
+              currentPage === number
+                ? "bg-blue-600 text-white shadow-sm"
+                : "bg-gray-100 hover:bg-gray-200 text-gray-800"
             }`}
           >
             {number}
@@ -48,12 +55,16 @@ export const Pagination = ({
         );
       })}
 
-      {end < totalPages && <span className="px-2">...</span>}
+      {end < totalPages && (
+        <span className="px-2 text-gray-500 font-semibold select-none">
+          ...
+        </span>
+      )}
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 cursor-pointer"
+        className="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-gray-100 hover:bg-gray-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Next
       </button>

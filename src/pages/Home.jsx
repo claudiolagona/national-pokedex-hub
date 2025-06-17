@@ -8,49 +8,53 @@ export const Home = () => {
   const user = useSelector((state) => state.user);
 
   return (
-    <div className="h-200 flex flex-col items-center justify-center bg-white text-gray-800 px-4 text-center">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4">National Pokédex</h1>
-      <p className="text-lg md:text-xl mb-8">
-        Your personal Pokémon Center Hub
-      </p>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-white to-blue-100 flex items-center justify-center px-4 py-10">
+      <div className="backdrop-blur-lg bg-white/60 shadow-xl rounded-xl p-8 md:p-12 text-center max-w-3xl w-full border border-white/40">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 drop-shadow-sm">
+          National Pokédex
+        </h1>
+        <p className="text-lg md:text-xl text-gray-700 mb-10">
+          Your personal Pokémon Center Hub
+        </p>
 
-      <motion.img
-        src={welcomingPikachu}
-        alt="Welcoming Pikachu"
-        className="w-64 h-auto mb-10 drop-shadow-md"
-        animate={{
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 1.2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+        <motion.img
+          src={welcomingPikachu}
+          alt="Welcoming Pikachu"
+          className="w-52 h-auto mx-auto mb-10 drop-shadow-lg"
+          animate={{
+            y: [0, -15, 0],
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
 
-      <div className="flex flex-wrap justify-center gap-4">
-        <Link
-          to={"/pokemon"}
-          className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 px-6 rounded shadow"
-        >
-          Go to Pokédex
-        </Link>
-        {user.currentUser?.role === "admin" && (
+        <div className="flex flex-wrap justify-center gap-4">
           <Link
-            to={"/create"}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded shadow"
+            to={"/pokemon"}
+            className="bg-yellow-400 hover:bg-yellow-500 text-black hover:text-white font-semibold py-3 px-6 rounded-lg shadow transition-transform transform hover:scale-105"
           >
-            Create a Custom Pokémon
+            Go to Pokédex
           </Link>
-        )}
-        {user.isLoggedIn && (
-          <Link
-            to={"/favorites"}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded shadow"
-          >
-            Your favorites
-          </Link>
-        )}
+          {user.currentUser?.role === "admin" && (
+            <Link
+              to={"/create"}
+              className="bg-blue-500 hover:bg-blue-600 text-black hover:text-white font-semibold py-3 px-6 rounded-lg shadow transition-transform transform hover:scale-105"
+            >
+              Create a Custom Pokémon
+            </Link>
+          )}
+          {user.isLoggedIn && (
+            <Link
+              to={"/favorites"}
+              className="bg-red-500 hover:bg-red-600 text-black hover:text-white font-semibold py-3 px-6 rounded-lg shadow transition-transform transform hover:scale-105"
+            >
+              Your favorites
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

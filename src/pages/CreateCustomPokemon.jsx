@@ -51,13 +51,16 @@ export const CreateCustomPokemon = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-red-100 py-8">
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-indigo-100 py-25 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-10 drop-shadow-sm">
           Create a Custom Pokémon
         </h1>
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form
+            className="grid grid-cols-1 gap-2"
+            onSubmit={methods.handleSubmit(onSubmit)}
+          >
             <InputFields
               name="name"
               label="Name"
@@ -182,7 +185,7 @@ export const CreateCustomPokemon = () => {
 
             <button
               type="submit"
-              className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md cursor-pointer hover:from-blue-700 hover:to-indigo-700"
+              className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transform transition hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 cursor-pointer"
             >
               Save Pokémon
             </button>

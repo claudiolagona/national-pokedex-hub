@@ -24,118 +24,15 @@ export const PokemonsList = () => {
       : {
           role: "guest",
         };
-  /* const { pokemonList, authStatus, error } = useSelector(
+  const { pokemonList, authStatus, error } = useSelector(
     (state) => state.pokemon
-  ); */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const pokemonList = [
-    {
-      id: 1,
-      name: "bulbasaur",
-      sprites: {
-        front_default:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-        front_shiny:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
-        back_default:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
-        back_shiny:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
-      },
-      cries: null,
-      moves: [
-        "razor-wind",
-        "swords-dance",
-        "cut",
-        "bind",
-        "vine-whip",
-        "headbutt",
-        "tackle",
-        "body-slam",
-        "take-down",
-        "double-edge",
-        "growl",
-        "strength",
-        "mega-drain",
-        "leech-seed",
-        "growth",
-        "razor-leaf",
-        "solar-beam",
-        "poison-powder",
-        "sleep-powder",
-        "petal-dance",
-        "string-shot",
-        "toxic",
-        "rage",
-        "mimic",
-        "double-team",
-        "defense-curl",
-        "reflect",
-        "bide",
-        "rest",
-        "rock-slide",
-        "substitute",
-        "snore",
-        "curse",
-        "protect",
-        "sludge-bomb",
-        "mud-slap",
-        "giga-drain",
-        "endure",
-        "rollout",
-        "false-swipe",
-        "swagger",
-        "fury-cutter",
-        "attract",
-        "sleep-talk",
-        "return",
-        "frustration",
-        "safeguard",
-        "secret-power",
-        "synthesis",
-        "hidden-power",
-        "sunny-day",
-        "rock-smash",
-        "facade",
-        "nature-power",
-        "weather-ball",
-        "bullet-seed",
-        "magical-leaf",
-        "natural-gift",
-        "pick-up",
-        "fling",
-        "snatch",
-        "ingrain",
-        "tickle",
-        "grass-knot",
-        "round",
-        "echoed-voice",
-        "grass-pledge",
-        "work-up",
-        "confide",
-      ],
-      stats: [
-        { stat: { name: "hp" }, base_stat: 45 },
-        { stat: { name: "attack" }, base_stat: 49 },
-        { stat: { name: "defense" }, base_stat: 49 },
-        { stat: { name: "special-attack" }, base_stat: 65 },
-        { stat: { name: "special-defense" }, base_stat: 65 },
-        { stat: { name: "speed" }, base_stat: 45 },
-      ],
-      types: [{ type: { name: "grass" } }, { type: { name: "poison" } }],
-      height: 7,
-      weight: 69,
-      generation: "custom",
-      evolutions: [],
-    },
-  ];
-
+  );
   const customPokemonList =
     useSelector((state) => state.customPokemon.list) || [];
-  /* const customAuthStatus = useSelector(
+  const customAuthStatus = useSelector(
     (state) => state.customPokemon.authStatus
-  ); */
-  /* const customError = useSelector((state) => state.customPokemon.error); */
+  );
+  const customError = useSelector((state) => state.customPokemon.error);
   const allPokemons = [...pokemonList, ...customPokemonList];
   const [types, setTypes] = useState([]);
   const [generations, setGenerations] = useState([]);
@@ -205,17 +102,17 @@ export const PokemonsList = () => {
     indexOfLastPokemon
   );
 
-  /* if (authStatus === "loading" || customAuthStatus === "loading") {
+  if (authStatus === "loading" || customAuthStatus === "loading") {
     return <GlobalLoader />;
-  } */
+  }
 
-  /* if (authStatus === "failed" || customAuthStatus === "failed") {
+  if (authStatus === "failed" || customAuthStatus === "failed") {
     return (
       <p className="text-red-500 text-center">
         {error || customError || "Error while charging Pokémon."}
       </p>
     );
-  } */
+  }
 
   const handlePageChange = (page) => {
     setSearchParams({
@@ -254,8 +151,8 @@ export const PokemonsList = () => {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-20 py-6 mb-10">
-      <div className="flex flex-col lg:flex-row justify-center items-baseline gap-4 flex-wrap mb-6">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-20 py-25 pb-10 bg-gradient-to-br from-yellow-100 via-white to-blue-100">
+      <div className="flex flex-col lg:flex-row items-baseline justify-center gap-4 flex-wrap mb-8">
         <Search
           searchPokemon={searchPokemon}
           handleChange={handleSearchChange}
@@ -273,7 +170,7 @@ export const PokemonsList = () => {
         />
       </div>
 
-      <p className="px-4 sm:px-6 lg:px-20 text-left text-sm text-gray-700 mb-4">
+      <p className="text-center text-sm text-gray-600 mb-4">
         {filteredPokemons.length} Pokémons found
       </p>
 
@@ -287,7 +184,7 @@ export const PokemonsList = () => {
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center"
         >
           {currentPokemons.length === 0 && (
-            <p className="col-span-full text-center text-gray-500 text-lg font-semibold">
+            <p className="col-span-full text-center text-lg font-semibold text-gray-500">
               No Pokémons found
             </p>
           )}

@@ -6,40 +6,40 @@ export const PokemonCard = ({ pokemon }) => {
   const sprite = pokemon.sprite || null;
 
   return (
-    <div className="w-full sm:w-75 md:w-64 lg:w-75 bg-white px-4 py-15 rounded-xl shadow-md text-center hover:scale-110 transition cursor-pointer duration-200 mb-6">
-      <Link to={`/pokemon/${name}`}>
+    <Link
+      to={`/pokemon/${name}`}
+      className="w-full group block transform transition hover:scale-[1.05]"
+    >
+      <div className="relative backdrop-blur-md bg-white/10 hover:bg-white/70 rounded-lg shadow-lg p-6 text-center flex flex-col items-center gap-3 hover:shadow-2xl transition duration-300">
         {image || sprite ? (
           <img
             src={image || sprite}
             alt={name}
-            className="mx-auto mb-3 max-w-[120px] h-auto"
+            className="w-28 h-28 object-contain transition-transform duration-200 group-hover:scale-105"
+            loading="lazy"
           />
         ) : (
-          <div className="mx-auto mb-3 w-[120px] h-[120px] bg-gray-100 rounded animate-pulse"></div>
+          <div className="w-28 h-28 bg-gray-100 rounded-lg animate-pulse" />
         )}
-        <h2 className="text-2xl font-bold capitalize">{name}</h2>
+        <h2 className="text-xl font-extrabold capitalize text-gray-800 tracking-wide capitalize">
+          {name}
+        </h2>
 
         {types && (
-          <div className="flex justify-center gap-2 mt-2 flex-wrap">
-            {types.map((type, index) => {
-              if (!type || !type.type || !type.type.name) return null;
-
-              const typeName = type.type.name;
-
-              return (
-                <span
-                  className={`text-md px-4 py-2 rounded capitalize font-bold ${
-                    typeColors[typeName] || "bg-gray-200"
-                  }`}
-                  key={index}
-                >
-                  {typeName}
-                </span>
-              );
-            })}
+          <div className="flex flex-wrap justify-center gap-2 mt-2">
+            {types.map((type, index) => (
+              <span
+                key={index}
+                className={`text-sm font-bold px-3 py-1 rounded-lg text-white shadow-sm ${
+                  typeColors[type] || "bg-gray-400"
+                }`}
+              >
+                {type}
+              </span>
+            ))}
           </div>
         )}
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };

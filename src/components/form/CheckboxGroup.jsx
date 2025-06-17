@@ -29,12 +29,13 @@ export const CheckboxGroup = ({ name, label }) => {
   } = useFormContext();
 
   return (
-    <div className="mb-6">
+    <div className="my-2">
       <label
         htmlFor={name}
-        className="block text-sm font-semibold text-gray-700 mb-1"
+        className="block text-sm font-semibold text-gray-800 mb-2"
       >
-        {label} <span className="text-sm text-gray-500 ml-2">(max 2)</span>
+        {label}
+        <span className="ml-2 text-xs font-normal text-gray-500">(max 2)</span>
       </label>
 
       <Controller
@@ -57,24 +58,29 @@ export const CheckboxGroup = ({ name, label }) => {
           };
 
           return (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-2">
               {POKEMON_TYPES.map((type) => {
                 const isSelected = value.includes(type);
                 const bgColor = typeColors[type];
                 return (
                   <button
-                    type="button"
                     key={type}
+                    type="button"
                     onClick={() => handleCheckboxChange(type)}
-                    className={`capitalize px-3 py-2 rounded-lg text-white font-semibold shadow-md transition transform ${bgColor} ${
-                      isSelected
-                        ? "ring-2 ring-teal-500 scale-102"
-                        : "opacity-80 hover:opacity-100"
-                    } ${
-                      value.length >= 2 && !isSelected
-                        ? "pointer-events-none opacity-50"
-                        : "cursor-pointer"
-                    }`}
+                    className={`capitalize px-4 py-2 rounded-lg font-medium text-white shadow-md transition-all duration-200 transform backdrop-blur-sm
+                      ${bgColor} 
+                      ${
+                        isSelected
+                          ? "ring-2 ring-teal-500 scale-105"
+                          : "opacity-90 hover:opacity-100"
+                      }
+                      ${
+                        value.length >= 2 && !isSelected
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:ring-offset-1`}
+                    aria-pressed={isSelected}
                   >
                     {type}
                   </button>
@@ -86,7 +92,7 @@ export const CheckboxGroup = ({ name, label }) => {
       />
 
       {errors[name] && (
-        <p className="text-red-500 text-sm mt-1">{errors[name].message}</p>
+        <p className="text-red-500 text-sm mt-2">{errors[name].message}</p>
       )}
     </div>
   );

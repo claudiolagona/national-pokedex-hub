@@ -4,6 +4,16 @@ import { useState } from "react";
 import { logout } from "../redux/user/userActions";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiLogOut,
+  FiUser,
+  FiHeart,
+  FiGrid,
+  FiPlus,
+  FiMenu,
+  FiX,
+  FiBookOpen,
+} from "react-icons/fi";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -17,54 +27,43 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-red-600 text-white max-sm:px-4 px-20 py-6">
-      <div className="flex justify-between items-center">
-        <Link to="/" className="font-black text-2xl text-yellow-400 logo">
-          National Pokédex
+    <nav className="backdrop-blur-md bg-white/70 text-gray-800 shadow-md fixed top-0 left-0 w-full z-50 border-b border-white/30 rounded-b-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
+        <Link
+          to="/"
+          className="text-2xl font-semibold tracking-tight hover:opacity-80 transition logo"
+        >
+          National <span className="text-red-500 logo">Pokédex</span>
         </Link>
 
         {/* Hamburger */}
         <button
           className="lg:hidden focus:outline-none"
+          aria-label="Toggle menu"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            {isOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
+          {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
 
         {/* Desktop Menu */}
-        <ul className="lg:flex gap-4 items-center max-lg:hidden">
+        <ul className="hidden lg:flex gap-6 items-center text-sm font-medium">
           <li>
-            <Link to="/pokemon">Pokémons</Link>
+            <Link to="/pokemon" className="hover:text-red-500 transition">
+              <FiBookOpen className="inline mr-1" /> Pokémons
+            </Link>
           </li>
 
           {isLoggedIn && currentUser?.role === "admin" && (
             <>
               <li>
-                <Link to="/create">Create</Link>
+                <Link to="/create" className="hover:text-red-500 transition">
+                  <FiPlus className="inline mr-1" /> Create
+                </Link>
               </li>
               <li>
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard" className="hover:text-red-500 transition">
+                  <FiGrid className="inline mr-1" /> Dashboard
+                </Link>
               </li>
             </>
           )}
@@ -72,24 +71,31 @@ export const Navbar = () => {
           {isLoggedIn && (
             <>
               <li>
-                <Link to="/favorites">Favorites</Link>
+                <Link to="/favorites" className="hover:text-red-500 transition">
+                  <FiHeart className="inline mr-1" /> Favorites
+                </Link>
               </li>
               <li>
-                <Link to="/profile">Profile</Link>
+                <Link to="/profile" className="hover:text-red-500 transition">
+                  <FiUser className="inline mr-1" /> Profile
+                </Link>
               </li>
             </>
           )}
 
           {!isLoggedIn ? (
             <li>
-              <Link to="/login">Login</Link>
+              <Link to="/login" className="hover:text-red-500 transition">
+                Login
+              </Link>
             </li>
           ) : (
             <li>
               <button
                 onClick={handleLogout}
-                className="bg-yellow-400 text-red-600 hover:underline cursor-pointer rounded px-2 py-1"
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition flex items-center gap-2 cursor-pointer"
               >
+                <FiLogOut />
                 Logout ({currentUser.username})
               </button>
             </li>
@@ -105,23 +111,23 @@ export const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col mt-4 gap-2 lg:hidden overflow-hidden"
+            className="lg:hidden bg-white shadow-md px-6 py-4 flex flex-col gap-4 text-sm font-medium"
           >
             <li>
               <Link to="/pokemon" onClick={() => setIsOpen(false)}>
-                Pokémons
+                <FiBookOpen className="inline mr-1" /> Pokémons
               </Link>
             </li>
             {isLoggedIn && currentUser?.role === "admin" && (
               <>
                 <li>
                   <Link to="/create" onClick={() => setIsOpen(false)}>
-                    Create
+                    <FiPlus className="inline mr-1" /> Create
                   </Link>
                 </li>
                 <li>
                   <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                    Dashboard
+                    <FiGrid className="inline mr-1" /> Dashboard
                   </Link>
                 </li>
               </>
@@ -130,12 +136,12 @@ export const Navbar = () => {
               <>
                 <li>
                   <Link to="/favorites" onClick={() => setIsOpen(false)}>
-                    Favorites
+                    <FiHeart className="inline mr-1" /> Favorites
                   </Link>
                 </li>
                 <li>
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
-                    Profile
+                    <FiUser className="inline mr-1" /> Profile
                   </Link>
                 </li>
               </>
@@ -153,8 +159,9 @@ export const Navbar = () => {
                     handleLogout;
                     setIsOpen(false);
                   }}
-                  className="bg-yellow-400 text-red-600 hover:underline cursor-pointer rounded px-2 py-1"
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"
                 >
+                  <FiLogOut />
                   Logout ({currentUser.username})
                 </button>
               </li>
