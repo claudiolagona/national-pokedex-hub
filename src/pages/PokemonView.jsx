@@ -131,7 +131,7 @@ export const PokemonView = () => {
         ← Back
       </button>
 
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="flex flex-col items-center lg:flex-row gap-10">
         <div className="w-full sm:max-w-sm md:max-w-md">
           <Swiper
             modules={[Navigation, Pagination]}

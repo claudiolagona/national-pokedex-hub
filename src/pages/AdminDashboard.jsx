@@ -13,7 +13,7 @@ export const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-white to-blue-100 px-4 py-25">
-      <div className="max-w-6xl mx-auto p-6 backdrop-blur-md bg-white/50 rounded-lg shadow-xl">
+      <div className="max-w-5xl mx-auto mt-10 p-6 backdrop-blur-md bg-white/50 rounded-lg shadow-xl">
         <h1 className="text-3xl font-bold text-gray-800 capitalize mb-2">
           {currentUser.username} Dashboard
         </h1>

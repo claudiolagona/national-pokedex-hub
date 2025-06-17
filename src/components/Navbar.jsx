@@ -110,8 +110,8 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white shadow-md px-6 py-4 flex flex-col gap-4 text-sm font-medium"
+            transition={{ duration: 0.2 }}
+            className="lg:hidden backdrop-blur-md bg-white/50 rounded-b-lg shadow-md px-6 py-4 flex flex-col gap-4 text-sm font-medium"
           >
             <li>
               <Link to="/pokemon" onClick={() => setIsOpen(false)}>
