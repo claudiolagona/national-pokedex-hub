@@ -115,7 +115,7 @@ export const PokemonView = () => {
     );
   }
 
-  if (currentUser.role !== "admin" && pokemon.generation === "custom") return;
+  if (currentUser?.role !== "admin" && pokemon.generation === "custom") return;
 
   return (
     <motion.div
@@ -190,7 +190,7 @@ export const PokemonView = () => {
             <FavoriteButton key={pokemon.name} pokemon={pokemon} />
           ) : (
             <p className="text-sm text-gray-500 italic mt-4">
-              Log if you want to save your favorites Pokémon
+              Log if you want to save your favorite Pokémons
             </p>
           )}
           {pokemon.generation === "custom" && (
