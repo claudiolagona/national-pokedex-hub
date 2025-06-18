@@ -73,13 +73,16 @@ export const PokemonsList = () => {
   }, []);
 
   useEffect(() => {
-    if (!pokemonList.length > 0) {
+    if (pokemonList.length === 0) {
       dispatch(fetchPokemonThunk());
-      if (currentUser.role === "admin") {
-        dispatch(loadCustomPokemon());
-      }
     }
-  }, [dispatch, pokemonList, currentUser]);
+  }, [dispatch, pokemonList]);
+
+  useEffect(() => {
+    if (currentUser?.role === "admin") {
+      dispatch(loadCustomPokemon());
+    }
+  }, [dispatch, currentUser]);
 
   const filteredPokemons = allPokemons.filter((pokemon) => {
     const matchesSearch = pokemon.name
