@@ -5,7 +5,7 @@ export const FilterByGenerations = ({
   currentUser,
 }) => {
   return (
-    <div className="inline-block relative w-full sm:w-60">
+    <div className="inline-block relative w-[30%] max-sm:w-full">
       <select
         value={selectedGen}
         onChange={(e) => changeGen(e.target.value)}

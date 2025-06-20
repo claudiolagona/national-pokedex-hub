@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AdminDashboard = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const customPokemonList = useSelector((state) => state.customPokemon.list);
   const [customPokemon, setCustomPokemon] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const lastCustomPokemons = customPokemonList.slice(-5).reverse();
@@ -28,7 +30,8 @@ export const AdminDashboard = () => {
             {customPokemon.map((pokemon) => (
               <div
                 key={pokemon.id}
-                className="bg-gray-50 rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow duration-300"
+                className="bg-gray-50 rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow duration-300 cursor-pointer"
+                onClick={() => navigate(`/pokemon/${pokemon.name}`)}
               >
                 <img
                   src={pokemon.sprite}

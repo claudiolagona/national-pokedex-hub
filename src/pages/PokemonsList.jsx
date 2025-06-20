@@ -155,7 +155,7 @@ export const PokemonsList = () => {
 
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-20 py-25 pb-10 bg-gradient-to-br from-yellow-100 via-white to-blue-100">
-      <div className="flex flex-col lg:flex-row items-baseline justify-center gap-4 flex-wrap mb-8">
+      <div className="w-full flex flex-row items-baseline justify-center gap-2 flex-wrap mb-8">
         <Search
           searchPokemon={searchPokemon}
           handleChange={handleSearchChange}

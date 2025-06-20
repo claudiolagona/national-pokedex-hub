@@ -31,7 +31,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
         <Link
           to="/"
-          className="text-2xl font-semibold tracking-tight hover:opacity-80 transition logo"
+          className="text-2xl max-xl:text-xl font-semibold tracking-tight hover:opacity-80 transition logo"
         >
           National <span className="text-red-500 logo">Pokédex</span>
         </Link>

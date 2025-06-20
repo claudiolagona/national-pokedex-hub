@@ -3,6 +3,7 @@ import {
   addFavorites,
   removeFavorites,
 } from "../redux/favorites/favoritesActions";
+import { FavoriteToast } from "./FavoriteToast";
 import toast from "react-hot-toast";
 
 export const FavoriteButton = ({ pokemon }) => {
@@ -11,13 +12,21 @@ export const FavoriteButton = ({ pokemon }) => {
   const isFavorite = favorites.some((fav) => fav.name === pokemon.name);
 
   const handleFavoriteToggle = () => {
+    toast.dismiss();
+
+    const message = isFavorite ? `${pokemon.name} removed from favorites.` : `${pokemon.name} added to favorites.`;
+
+    const type = isFavorite ? "remove" : "add";
+
     if (isFavorite) {
       dispatch(removeFavorites(pokemon));
-      toast.error(`${pokemon.name} removed from favorites.`);
     } else {
       dispatch(addFavorites(pokemon));
-      toast.success(`${pokemon.name} added to favorites.`);
     }
+
+    toast.custom(t => (
+      <FavoriteToast message={message} type={type} />
+    ), { duration: 1 })
   };
 
   return (

@@ -1,6 +1,6 @@
 export const Search = ({ searchPokemon, handleChange }) => {
   return (
-    <div className="w-full md:w-1/2 mb-6 relative">
+    <div className="w-full relative">
       <input
         className="w-full px-4 py-2 pl-10 text-gray-800 bg-white border-2 border-gray-300 rounded-lg shadow-sm outline-none transition duration-200 focus:border-teal-500"
         type="text"

@@ -29,7 +29,7 @@ function App() {
     <>
       <GlobalLoader />
       <Navbar />
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" toastOptions={{ style: { zIndex:9999 } }} reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

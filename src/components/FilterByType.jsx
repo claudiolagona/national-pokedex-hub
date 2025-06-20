@@ -2,7 +2,7 @@ import { typeColorsBorder } from "../utils/typeColors";
 
 export const FilterByType = ({ selectedType, changeType, allTypes }) => {
   return (
-    <div className="inline-block relative w-full sm:w-60">
+    <div className="inline-block relative w-[30%] max-sm:w-full">
       <select
         value={selectedType}
         onChange={(e) => changeType(e.target.value)}
