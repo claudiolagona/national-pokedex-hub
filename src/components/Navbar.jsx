@@ -156,7 +156,7 @@ export const Navbar = () => {
               <li>
                 <button
                   onClick={() => {
-                    handleLogout;
+                    handleLogout();
                     setIsOpen(false);
                   }}
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2"

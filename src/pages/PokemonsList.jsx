@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPokemonThunk } from "../redux/pokemon/pokemonThunks";
 import { PokemonCard } from "../components/PokemonCard";
@@ -17,25 +17,30 @@ export const PokemonsList = () => {
   const pokemonsPerPage = 20;
 
   const userFromState = useSelector((state) => state.user.currentUser);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const currentUser =
-    userFromState && userFromState.role
+
+  const currentUser = useMemo(() => {
+    return userFromState && userFromState.role
       ? userFromState
       : {
           role: "guest",
         };
+  }, [userFromState]);
   const { pokemonList, authStatus, error } = useSelector(
     (state) => state.pokemon
   );
-  const customPokemonList =
-    useSelector((state) => state.customPokemon.list) || [];
+  const customPokemonListRaw = useSelector((state) => state.customPokemon.list);
   const customAuthStatus = useSelector(
     (state) => state.customPokemon.authStatus
   );
   const customError = useSelector((state) => state.customPokemon.error);
-  const allPokemons = [...pokemonList, ...customPokemonList];
+  const allPokemons = useMemo(() => {
+    const customPokemonList = customPokemonListRaw || [];
+    return [...pokemonList, ...customPokemonList];
+  }, [customPokemonListRaw, pokemonList]);
   const [types, setTypes] = useState([]);
   const [generations, setGenerations] = useState([]);
+  const [isLoadingTypes, setIsLoadingTypes] = useState(true);
+  const [isLoadingGenerations, setIsLoadingGenerations] = useState(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
@@ -49,9 +54,18 @@ export const PokemonsList = () => {
 
   useEffect(() => {
     const fetchTypes = async () => {
-      const res = await fetch("https://pokeapi.co/api/v2/type");
-      const data = await res.json();
-      setTypes(data.results);
+      try {
+        setIsLoadingTypes(true);
+        const res = await fetch("https://pokeapi.co/api/v2/type");
+        if (!res.ok) throw new Error("Failed to fetch types");
+        const data = await res.json();
+        setTypes(data.results);
+      } catch (error) {
+        console.error(error);
+        setTypes([]);
+      } finally {
+        setIsLoadingTypes(false);
+      }
     };
 
     fetchTypes();
@@ -60,12 +74,16 @@ export const PokemonsList = () => {
   useEffect(() => {
     const fetchGenerations = async () => {
       try {
+        setIsLoadingGenerations(true);
         const res = await fetch("https://pokeapi.co/api/v2/generation");
         if (!res.ok) throw new Error("Failed to fetch generations");
         const data = await res.json();
         setGenerations(data.results);
       } catch (error) {
         console.error("Error fetching generations:", error);
+        setGenerations([]);
+      } finally {
+        setIsLoadingGenerations(false);
       }
     };
 
@@ -84,17 +102,26 @@ export const PokemonsList = () => {
     }
   }, [dispatch, currentUser]);
 
-  const filteredPokemons = allPokemons.filter((pokemon) => {
-    const matchesSearch = pokemon.name
-      .toLowerCase()
-      .includes(searchPokemon.toLowerCase());
-    const matchesType = !selectedType || pokemon.types?.includes(selectedType);
-    const matchesGen = !selectedGen || pokemon.generation === selectedGen;
-    const customVisibility =
-      currentUser?.role === "admin" || pokemon.generation !== "custom";
+  const filteredPokemons = useMemo(() => {
+    return allPokemons.filter((pokemon) => {
+      const matchesSearch = pokemon.name
+        .toLowerCase()
+        .includes(searchPokemon.toLowerCase());
+      const matchesType =
+        !selectedType || pokemon.types?.includes(selectedType);
+      const matchesGen = !selectedGen || pokemon.generation === selectedGen;
+      const customVisibility =
+        currentUser?.role === "admin" || pokemon.generation !== "custom";
 
-    return matchesSearch && matchesType && matchesGen && customVisibility;
-  });
+      return matchesSearch && matchesType && matchesGen && customVisibility;
+    });
+  }, [
+    allPokemons,
+    searchPokemon,
+    selectedType,
+    selectedGen,
+    currentUser?.role,
+  ]);
 
   const totalPages = Math.ceil(filteredPokemons.length / pokemonsPerPage);
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
@@ -105,14 +132,19 @@ export const PokemonsList = () => {
     indexOfLastPokemon
   );
 
-  if (authStatus === "loading" || customAuthStatus === "loading") {
+  if (
+    authStatus === "loading" ||
+    customAuthStatus === "loading" ||
+    isLoadingGenerations ||
+    isLoadingTypes
+  ) {
     return <GlobalLoader />;
   }
 
   if (authStatus === "failed" || customAuthStatus === "failed") {
     return (
       <p className="text-red-500 text-center">
-        {error || customError || "Error while charging Pokémon."}
+        {error || customError || "Error while loading Pokémon."}
       </p>
     );
   }
@@ -197,11 +229,13 @@ export const PokemonsList = () => {
         </motion.div>
       </AnimatePresence>
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={(page) => handlePageChange(page)}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => handlePageChange(page)}
+        />
+      )}
     </div>
   );
 };

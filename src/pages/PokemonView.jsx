@@ -115,7 +115,8 @@ export const PokemonView = () => {
     );
   }
 
-  if (currentUser?.role !== "admin" && pokemon.generation === "custom") return;
+  if (currentUser?.role !== "admin" && pokemon.generation === "custom")
+    navigate("/pokemon");
 
   return (
     <motion.div

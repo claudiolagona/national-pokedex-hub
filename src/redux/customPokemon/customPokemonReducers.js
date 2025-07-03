@@ -17,22 +17,18 @@ export const customPokemonReducer = (state = initialState, action) => {
     case "customPokemon/delete":
       return {
         ...state,
-        list: [
-          state.list.filter(
-            (customPokemon) => customPokemon.id !== action.payload
-          ),
-        ],
+        list: state.list.filter(
+          (customPokemon) => customPokemon.id !== action.payload
+        ),
       };
     case "customPokemon/update":
       return {
         ...state,
-        list: [
-          state.list.map((customPokemon) =>
-            customPokemon.id === action.payload.id
-              ? action.payload
-              : customPokemon
-          ),
-        ],
+        list: state.list.map((customPokemon) =>
+          customPokemon.id === action.payload.id
+            ? action.payload
+            : customPokemon
+        ),
       };
     default:
       return state;
